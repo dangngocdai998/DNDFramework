@@ -2,8 +2,8 @@
 using UnityEngine.EventSystems;
 using DG.Tweening;
 using UnityEngine.Events;
-
-public class ButtonScaler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+// namespace 
+public class BaseBtnScale : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public Vector2 startScale;
     public Vector2 endScale;
