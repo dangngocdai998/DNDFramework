@@ -7,7 +7,6 @@ public class ButtonScaler : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 {
     public Vector2 startScale;
     public Vector2 endScale;
-    [SerializeField] bool useAudio = true;
 
     [SerializeField] protected UnityEvent eventOnPointDown;
     [SerializeField] protected UnityEvent eventOnPointUp;
@@ -27,13 +26,7 @@ public class ButtonScaler : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         {
             eventOnPointDown.Invoke();
         }
-        if (useAudio)
-        {
-            // if (AudioManager.Exists())
-            // {
-            //     AudioManager.Instance.Shot("ButtonClick");
-            // }
-        }
+        EventPointerDown();
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -44,5 +37,7 @@ public class ButtonScaler : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             eventOnPointUp.Invoke();
         }
     }
+
+    protected virtual void EventPointerDown() { }
 
 }
