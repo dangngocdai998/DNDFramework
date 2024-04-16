@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 /// <summary>
@@ -30,3 +31,4 @@ public class ReadOnlyDrawer : PropertyDrawer
         }
     }
 }
+#endif

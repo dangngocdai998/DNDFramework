@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -416,3 +417,4 @@ public class ObjectData
     public float ExpectedProgress;
     public GameObject GameObject;
 }
+#endif

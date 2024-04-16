@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -31,3 +32,4 @@ public class EdiorMethods : Editor
         AssetDatabase.ImportAsset(path + name + extension);
     }
 }
+#endif

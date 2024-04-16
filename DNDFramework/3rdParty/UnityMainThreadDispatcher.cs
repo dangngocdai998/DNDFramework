@@ -31,7 +31,7 @@ namespace DNDFramework
 
         private static readonly Queue<Action> _executionQueue = new Queue<Action>();
 
-        public void Update()
+        private void Update()
         {
             lock (_executionQueue)
             {
