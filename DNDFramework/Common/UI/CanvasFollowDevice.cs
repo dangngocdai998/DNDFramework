@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CanvasFollowDevice : SingletonMonoBehaviour<CanvasFollowDevice>
+public class CanvasFollowDevice : MonoBehaviour
 {
     [ReadOnly] public float Aspect;
     public bool GizmosUpdate = true;
