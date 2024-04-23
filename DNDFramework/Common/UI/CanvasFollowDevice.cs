@@ -50,10 +50,8 @@ public class CanvasFollowDevice : MonoBehaviour
     [SerializeField] private CanvasScaler[] _canvasScalers;
     [SerializeField] private Camera _cam;
 
-    public override void Awake()
+    private void Awake()
     {
-        base.Awake();
-
 
         // var canvas = gameObject.GetComponent<Canvas>();
         if (_cam)
