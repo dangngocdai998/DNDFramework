@@ -1,9 +1,9 @@
 
-public enum EventID
-{
-    UpdateData,
+// public enum EventID
+// {
+//     UpdateData,
 
-    Loading,
-    UpdateDataTime,
-    ActiveButtonControll,
-}
+//     Loading,
+//     UpdateDataTime,
+//     ActiveButtonControll,
+// }

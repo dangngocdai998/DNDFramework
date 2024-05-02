@@ -11,15 +11,15 @@ public class TextDataTimeHours : MonoBehaviour
     [Header("Use for textMeshProUI")]
     // [SerializeField] DataType typeData;
     [SerializeField] TextMeshProUGUI txt_Data;
-
+    const string eventUpdateDataTime = "UpdateDataTime";
     public void OnEnable()
     {
-        this.RegisterListener(EventID.UpdateDataTime, (obj) => UpdateDataTime((double)obj));
+        this.RegisterListener(eventUpdateDataTime, (obj) => UpdateDataTime((double)obj));
         // UpdateDataTime(GameData.I.GetTimeReal);
     }
     public void OnDisable()
     {
-        this.RemoveListener(EventID.UpdateDataTime);
+        this.RemoveListener(eventUpdateDataTime);
     }
     /// <summary>
     /// This function is called when the MonoBehaviour will be destroyed.

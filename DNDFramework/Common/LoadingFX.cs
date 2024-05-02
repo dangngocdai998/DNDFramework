@@ -6,6 +6,9 @@ public class LoadingFX : SingletonMonoBehaviour<LoadingFX>
 {
     // [SerializeField]Animator animator;
     [SerializeField] GameObject obj_Loading;
+
+    const string eventLoading = "Loading";
+
     bool loaded = false;
     // public bool GetLoading => loaded;
     public bool Loading
@@ -18,13 +21,13 @@ public class LoadingFX : SingletonMonoBehaviour<LoadingFX>
                 if (!loaded)
                 {
                     StartFade();
-                    this.PostEvent(EventID.Loading, true);
+                    this.PostEvent(eventLoading, true);
                 }
             }
             else
             {
                 EndFade();
-                this.PostEvent(EventID.Loading, false);
+                this.PostEvent(eventLoading, false);
             }
             loaded = value;
         }
