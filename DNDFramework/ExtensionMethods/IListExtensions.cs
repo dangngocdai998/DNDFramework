@@ -8,6 +8,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace DNDFramework
 {
@@ -142,7 +143,7 @@ namespace DNDFramework
         public static string FormatNumber(this double number, int digits, bool useLongExponents)
         {
             int exponentsCounter = 0;
-
+            CultureInfo culture = new CultureInfo("en-US");
             while (number / 1000 > 1)
             {
                 exponentsCounter++;
@@ -155,27 +156,27 @@ namespace DNDFramework
             switch (digits)
             {
                 case 3:
-                    numberAsString = string.Format("{0:F3}", number).Contains(".")
-                        ? string.Format("{0:F3}", number).TrimEnd('0').TrimEnd('.')
-                        : string.Format("{0:F3}", number);
+                    numberAsString = string.Format(culture, "{0:F3}", number).Contains(".")
+                        ? string.Format(culture, "{0:F3}", number).TrimEnd('0').TrimEnd('.')
+                        : string.Format(culture, "{0:F3}", number);
                     break;
 
                 case 2:
-                    numberAsString = string.Format("{0:F2}", number).Contains(".")
-                        ? string.Format("{0:F2}", number).TrimEnd('0').TrimEnd('.')
-                        : string.Format("{0:F2}", number);
+                    numberAsString = string.Format(culture, "{0:F2}", number).Contains(".")
+                        ? string.Format(culture, "{0:F2}", number).TrimEnd('0').TrimEnd('.')
+                        : string.Format(culture, "{0:F2}", number);
                     break;
 
                 case 1:
-                    numberAsString = string.Format("{0:F1}", number).Contains(".")
-                        ? string.Format("{0:F1}", number).TrimEnd('0').TrimEnd('.')
-                        : string.Format("{0:F1}", number);
+                    numberAsString = string.Format(culture, "{0:F1}", number).Contains(".")
+                        ? string.Format(culture, "{0:F1}", number).TrimEnd('0').TrimEnd('.')
+                        : string.Format(culture, "{0:F1}", number);
                     break;
 
                 default:
                     numberAsString = string.Format("{0:F0}", number).Contains(".")
-                        ? string.Format("{0:F0}", number).TrimEnd('0').TrimEnd('.')
-                        : string.Format("{0:F0}", number);
+                        ? string.Format(culture, "{0:F0}", number).TrimEnd('0').TrimEnd('.')
+                        : string.Format(culture, "{0:F0}", number);
                     break;
             }
 
