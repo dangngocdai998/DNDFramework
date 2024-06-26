@@ -10,12 +10,3 @@ public enum TypeInput
     RIGHT
 
 }
-
-[Serializable]
-public enum TypeToast
-{
-    SUCCESS,
-    INFO,
-    ERROR,
-    WARNING
-}
