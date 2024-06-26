@@ -2,7 +2,7 @@
     "name": "CarterGames.AudioManager.Editor",
     "rootNamespace": "CarterGames.Assets.AudioManager.Editor",
     "references": [
-        "GUID:91fd2ddf85f92854e8e10eef3c91fb12"
+        "GUID:154143286b167704b97adec2ee310c8a"
     ],
     "includePlatforms": [
         "Editor"
