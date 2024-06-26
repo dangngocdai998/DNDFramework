@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0e439ce154b29540a50a86b406e77fe, type: 3}
+  m_Script: {fileID: 11500000, guid: 261f42becd94c724bae179a214c02590, type: 3}
   m_Name: Audio Manager Settings
   m_EditorClassIdentifier: 
-  baseAudioScanPath: Assets/_Game/Audio/Sounds
+  baseAudioScanPath: Assets
   isUsingStatic: 0
   showDebugMessages: 1
