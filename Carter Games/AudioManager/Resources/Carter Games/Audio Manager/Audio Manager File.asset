@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19ae0c8eafd7263429865ae0f6fe29e6, type: 3}
+  m_Name: Audio Manager File
+  m_EditorClassIdentifier: 
+  tabPos: 0
+  audioMixer:
+  - {fileID: 0}
+  soundPrefab: {fileID: 322064603624763291, guid: f97cb5ab9dca8bd488116e0ffc057e10, type: 3}
+  isPopulated: 1
+  directory:
+  - Assets/_Game/Audio/Sounds
+  library:
+  - key: button
+    value: {fileID: 8300000, guid: 31d4a42a368d7284888bcedffa8718d1, type: 3}
+  - key: buttonDown
+    value: {fileID: 8300000, guid: e31fb74ca11ece348b4b7b92dac2f4de, type: 3}
+  - key: buttonUp
+    value: {fileID: 8300000, guid: 5cce5f37f6a23974291e6d8fcf016023, type: 3}
+  - key: error_007
+    value: {fileID: 8300000, guid: 0f36177e0ca51a14ab4e9d3822feac8f, type: 3}
