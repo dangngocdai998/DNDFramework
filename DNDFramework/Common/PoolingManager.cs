@@ -2,24 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public enum NamePrefabPool
-{
-    Ball
 
-}
-[System.Serializable]
-public enum PrefabPoolType
-{
-    VFX,
-    GAMEOBJECT
-}
 [System.Serializable]
 public class PoolingInfo
 {
-    public string name;
-    public PrefabPoolType prefabType;
-    public NamePrefabPool namePrefab;
+    public string keyName;
     public GameObject prefab;
     public int countStartSpawn;
     public int maxPoolChangeScene = 20;
@@ -29,218 +16,79 @@ public class PoolingInfo
 
 public class PoolingManager : SingletonMonoBehaviour<PoolingManager>
 {
-    [Header("VFX POOL OBJECTS")]
-    public PoolingInfo[] vfxPoolingInfo;
-    // List<GameObject> listVFXPool = new List<GameObject>();
-
     [Header("GAMEOBJECT POOL")]
     public PoolingInfo[] gameObjectPoolingInfo;
     // List<GameObject> listObjectPool = new List<GameObject>();
 
     Dictionary<string, List<GameObject>> dicPooling = new Dictionary<string, List<GameObject>>();
-    Dictionary<string, List<ItemPooling>> dic1Pooling = new Dictionary<string, List<ItemPooling>>();
-
     private void Start()
     {
         StartSpawnObject();
     }
-
-#if UNITY_EDITOR
-    private void OnValidate()
+    void StartSpawnObject()
     {
-        if (vfxPoolingInfo != null && vfxPoolingInfo.Length > 0)
-        {
-            foreach (PoolingInfo pl in vfxPoolingInfo)
-            {
-                pl.name = pl.namePrefab.ToString();
-            }
-        }
-
-        if (gameObjectPoolingInfo != null && gameObjectPoolingInfo.Length > 0)
-        {
-            foreach (PoolingInfo pl in gameObjectPoolingInfo)
-            {
-                pl.name = pl.namePrefab.ToString();
-            }
-        }
-    }
-#endif
-
-    public void StartSpawnObject()
-    {
-        foreach (PoolingInfo pooling in vfxPoolingInfo)
-        {
-            if (pooling.prefabType == PrefabPoolType.VFX)
-            {
-                List<GameObject> vfxs = new List<GameObject>();
-                for (int i = 0; i < pooling.countStartSpawn; i++)
-                {
-                    GameObject obj = Instantiate(pooling.prefab, transform);
-                    obj.name = pooling.namePrefab.ToString();
-                    obj.SetActive(false);
-                    vfxs.Add(obj);
-                }
-                dicPooling.Add(pooling.name + "VFX", vfxs);
-
-
-            }
-        }
-
         foreach (PoolingInfo pooling in gameObjectPoolingInfo)
         {
-            if (pooling.prefabType == PrefabPoolType.GAMEOBJECT)
+            List<GameObject> go = new List<GameObject>();
+            for (int i = 0; i < pooling.countStartSpawn; i++)
             {
-                List<GameObject> objects = new List<GameObject>();
-                for (int i = 0; i < pooling.countStartSpawn; i++)
-                {
-                    GameObject obj = Instantiate(pooling.prefab, transform);
-                    obj.name = pooling.namePrefab.ToString();
-                    obj.SetActive(false);
-                    objects.Add(obj);
-                }
-                dicPooling.Add(pooling.name + "Obj", objects);
+                GameObject obj = Instantiate(pooling.prefab, transform);
+                obj.name = pooling.keyName;
+                obj.SetActive(false);
+                go.Add(obj);
             }
+            dicPooling.Add(pooling.keyName + "_Pool", go);
         }
     }
-
-    public GameObject GetVFX(NamePrefabPool name)
+    public GameObject GetObject(string keyName)
     {
-        string nameObj = name + "VFX";
+        string nameObj = keyName + "_Pool";
         if (dicPooling[nameObj].Count > 0)
         {
             foreach (GameObject obj in dicPooling[nameObj])
             {
-                if (!obj.activeSelf/*  && obj.name == name.ToString() */)
+                if (!obj.activeSelf && obj.name == keyName.ToString())
                 {
                     obj.SetActive(true);
                     return obj;
                 }
             }
 
-            for (int i = 0; i < vfxPoolingInfo.Length; i++)
+            for (int i = 0; i < gameObjectPoolingInfo.Length; i++)
             {
-                if (name == vfxPoolingInfo[i].namePrefab)
+                if (keyName == gameObjectPoolingInfo[i].keyName)
                 {
-                    GameObject vfx = Instantiate(vfxPoolingInfo[i].prefab, transform);
-                    vfx.name = name.ToString();
-                    // listVFXPool.Add(vfx);
-                    dicPooling[nameObj].Add(vfx);
-                    return vfx;
+                    GameObject go = Instantiate(gameObjectPoolingInfo[i].prefab, transform);
+                    go.name = keyName.ToString();
+                    dicPooling[nameObj].Add(go);
+                    return go;
                 }
             }
         }
         else
         {
-            for (int i = 0; i < vfxPoolingInfo.Length; i++)
+            for (int i = 0; i < gameObjectPoolingInfo.Length; i++)
             {
-                if (name == vfxPoolingInfo[i].namePrefab)
+                if (keyName == gameObjectPoolingInfo[i].keyName)
                 {
-                    GameObject vfx = Instantiate(vfxPoolingInfo[i].prefab, transform);
-                    vfx.name = name.ToString();
-                    // listVFXPool.Add(vfx);
-                    dicPooling[nameObj].Add(vfx);
-                    return vfx;
+                    GameObject go = Instantiate(gameObjectPoolingInfo[i].prefab, transform);
+                    go.name = keyName;
+                    dicPooling[nameObj].Add(go);
+                    return go;
                 }
             }
         }
 
         return null;
     }
-    public GameObject GetVFX(NamePrefabPool name, Vector3 position, Transform parent = null, bool insideCanvas = false)
+    public GameObject GetObject(string keyName, Vector3 position, Transform parent = null)
     {
-        string nameObj = name + "VFX";
+        string nameObj = keyName + "_Pool";
         if (dicPooling[nameObj].Count > 0)
         {
             foreach (GameObject obj in dicPooling[nameObj])
             {
-                if (!obj.activeSelf)
-                {
-                    if (parent == null)
-                    {
-                        obj.transform.SetParent(transform);
-                    }
-                    else
-                    {
-                        obj.transform.SetParent(parent);
-                    }
-                    if (insideCanvas)
-                    {
-                        obj.GetComponent<RectTransform>().anchoredPosition = position;
-                        obj.transform.localScale = Vector3.one;
-                    }
-                    else
-                        obj.transform.position = position;
-                    obj.SetActive(true);
-                    return obj;
-                }
-            }
-
-            for (int i = 0; i < vfxPoolingInfo.Length; i++)
-            {
-                if (name == vfxPoolingInfo[i].namePrefab)
-                {
-                    GameObject vfx = Instantiate(vfxPoolingInfo[i].prefab, transform);
-                    vfx.name = name.ToString();
-                    if (parent == null)
-                    {
-                        vfx.transform.SetParent(transform);
-                    }
-                    else
-                    {
-                        vfx.transform.SetParent(parent);
-                    }
-                    if (insideCanvas)
-                    {
-                        vfx.GetComponent<RectTransform>().anchoredPosition = position;
-                        vfx.transform.localScale = Vector3.one;
-                    }
-                    else
-                        vfx.transform.position = position;
-                    dicPooling[nameObj].Add(vfx);
-                    return vfx;
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < vfxPoolingInfo.Length; i++)
-            {
-                if (name == vfxPoolingInfo[i].namePrefab)
-                {
-                    GameObject vfx = Instantiate(vfxPoolingInfo[i].prefab, transform);
-                    vfx.name = name.ToString();
-                    if (parent == null)
-                    {
-                        vfx.transform.SetParent(transform);
-                    }
-                    else
-                    {
-                        vfx.transform.SetParent(parent);
-                    }
-
-                    if (insideCanvas)
-                    {
-                        vfx.GetComponent<RectTransform>().anchoredPosition = position;
-                        vfx.transform.localScale = Vector3.one;
-                    }
-                    else
-                        vfx.transform.position = position;
-                    dicPooling[nameObj].Add(vfx);
-                    return vfx;
-                }
-            }
-        }
-
-        return null;
-    }
-    public GameObject GetObject(NamePrefabPool name, Vector3 position, Transform parent = null)
-    {
-        string nameObj = name + "Obj";
-        if (dicPooling[nameObj].Count > 0)
-        {
-            foreach (GameObject obj in dicPooling[nameObj])
-            {
-                if (!obj.activeSelf && obj.name == name.ToString())
+                if (!obj.activeSelf && obj.name == keyName.ToString())
                 {
                     if (parent == null)
                     {
@@ -258,10 +106,10 @@ public class PoolingManager : SingletonMonoBehaviour<PoolingManager>
 
             for (int i = 0; i < gameObjectPoolingInfo.Length; i++)
             {
-                if (name == gameObjectPoolingInfo[i].namePrefab)
+                if (keyName == gameObjectPoolingInfo[i].keyName)
                 {
-                    GameObject vfx = Instantiate(gameObjectPoolingInfo[i].prefab, transform);
-                    vfx.name = name.ToString();
+                    GameObject vfx = Instantiate(gameObjectPoolingInfo[i].prefab, position, Quaternion.identity, transform);
+                    vfx.name = keyName.ToString();
                     if (parent == null)
                     {
                         vfx.transform.SetParent(transform);
@@ -281,10 +129,10 @@ public class PoolingManager : SingletonMonoBehaviour<PoolingManager>
         {
             for (int i = 0; i < gameObjectPoolingInfo.Length; i++)
             {
-                if (name == gameObjectPoolingInfo[i].namePrefab)
+                if (keyName == gameObjectPoolingInfo[i].keyName)
                 {
-                    GameObject vfx = Instantiate(gameObjectPoolingInfo[i].prefab, transform);
-                    vfx.name = name.ToString();
+                    GameObject vfx = Instantiate(gameObjectPoolingInfo[i].prefab, position, Quaternion.identity, transform);
+                    vfx.name = keyName.ToString();
                     if (parent == null)
                     {
                         vfx.transform.SetParent(transform);
@@ -348,98 +196,9 @@ public class PoolingManager : SingletonMonoBehaviour<PoolingManager>
 
         return vfx;
     }
-    /* public GameObject GetObjectPrefab(GameObject objSpaw, Vector3 position, Transform parent = null)
-    {
-        string nameObj = objSpaw.name + "_ObjPrefab";
-        if (dic1Pooling.ContainsKey(nameObj) && dic1Pooling[nameObj].Count > 0)
-        {
-            List<ItemPooling> listObject = dic1Pooling[nameObj];
-            for (int i = 0; i < listObject.Count; i++)
-            {
-                if (!listObject[i].getStatusActive)
-                {
-                    Debug.Log(listObject[i].name + " // " + listObject[i].getStatusActive);
-                    if (parent == null)
-                    {
-                        listObject[i].transform.SetParent(transform);
-                    }
-                    else
-                    {
-                        listObject[i].transform.SetParent(parent);
-                    }
-                    listObject[i].transform.position = position;
-                    listObject[i].SetActiveObj(true);
-                    dic1Pooling[nameObj] = listObject;
-                    return listObject[i].gameObject;
-                }
-            }
-        }
-        GameObject vfx = Instantiate(objSpaw, transform);
-        vfx.name = nameObj;
-        if (parent == null)
-        {
-            vfx.transform.SetParent(transform);
-        }
-        else
-        {
-            vfx.transform.SetParent(parent);
-        }
-        vfx.transform.position = position;
-        ItemPooling item = vfx.GetComponent<ItemPooling>();
-        item.SetActiveObj(true);
-        if (dic1Pooling.ContainsKey(nameObj))
-        {
-            dic1Pooling[nameObj].Add(item);
-        }
-        else
-        {
-            dic1Pooling.Add(nameObj, new List<ItemPooling> { item });
-        }
 
-        return vfx;
-    } */
 
-    public GameObject GetObject(NamePrefabPool name)
-    {
-        string nameObj = name + "Obj";
-        if (dicPooling[nameObj].Count > 0)
-        {
-            foreach (GameObject obj in dicPooling[nameObj])
-            {
-                if (!obj.activeSelf && obj.name == name.ToString())
-                {
-                    obj.SetActive(true);
-                    return obj;
-                }
-            }
 
-            for (int i = 0; i < gameObjectPoolingInfo.Length; i++)
-            {
-                if (name == gameObjectPoolingInfo[i].namePrefab)
-                {
-                    GameObject vfx = Instantiate(gameObjectPoolingInfo[i].prefab, transform);
-                    vfx.name = name.ToString();
-                    dicPooling[nameObj].Add(vfx);
-                    return vfx;
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < gameObjectPoolingInfo.Length; i++)
-            {
-                if (name == gameObjectPoolingInfo[i].namePrefab)
-                {
-                    GameObject vfx = Instantiate(gameObjectPoolingInfo[i].prefab, transform);
-                    vfx.name = name.ToString();
-                    dicPooling[nameObj].Add(vfx);
-                    return vfx;
-                }
-            }
-        }
-
-        return null;
-    }
     public void DisableAllObject()
     {
         StopAllCoroutines();
@@ -461,25 +220,27 @@ public class PoolingManager : SingletonMonoBehaviour<PoolingManager>
                 }
             }
         }
-        /* foreach (string key in dic1Pooling.Keys)
-        {
-            for (int i = dic1Pooling[key].Count - 1; i >= 0; i--)
-            {
-                if (dic1Pooling[key][i] == null)
-                {
-                    dic1Pooling[key].RemoveAt(i);
-                    // obj.transform.SetParent(transform);
-                }
-                else
-                {
-                    dic1Pooling[key][i].SetActiveObj(false);
-                    dic1Pooling[key][i].transform.SetParent(transform);
 
-                }
-            } */
-        // }
     }
+    public void DisableAllObjectByKey(string key)
+    {
+        key = $"{key}_Pool";
+        for (int i = dicPooling[key].Count - 1; i >= 0; i--)
+        {
+            if (dicPooling[key][i] == null)
+            {
+                dicPooling[key].RemoveAt(i);
+                // obj.transform.SetParent(transform);
+            }
+            else
+            {
+                dicPooling[key][i].SetActive(false);
+                dicPooling[key][i].transform.SetParent(transform);
 
+            }
+        }
+
+    }
     public void DisableObjectWithTime(GameObject obj, float time)
     {
         StartCoroutine(TimeDisableObject(obj, time));
