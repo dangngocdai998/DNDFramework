@@ -81,7 +81,7 @@ public class PoolingManager : SingletonMonoBehaviour<PoolingManager>
 
         return null;
     }
-    public GameObject GetObject(string keyName, Vector3 position, Transform parent = null)
+    public GameObject GetObject(string keyName, Vector3 position, Transform parent = null, bool insideCanvas = false)
     {
         string nameObj = keyName + "_Pool";
         if (dicPooling[nameObj].Count > 0)
@@ -97,6 +97,11 @@ public class PoolingManager : SingletonMonoBehaviour<PoolingManager>
                     else
                     {
                         obj.transform.SetParent(parent);
+                    }
+                    if (insideCanvas)
+                    {
+                        obj.GetComponent<RectTransform>().anchoredPosition = position;
+                        obj.transform.localScale = Vector3.one;
                     }
                     obj.transform.position = position;
                     obj.SetActive(true);
@@ -118,7 +123,11 @@ public class PoolingManager : SingletonMonoBehaviour<PoolingManager>
                     {
                         vfx.transform.SetParent(parent);
                     }
-
+                    if (insideCanvas)
+                    {
+                        vfx.GetComponent<RectTransform>().anchoredPosition = position;
+                        vfx.transform.localScale = Vector3.one;
+                    }
                     vfx.transform.position = position;
                     dicPooling[nameObj].Add(vfx);
                     return vfx;
@@ -141,6 +150,11 @@ public class PoolingManager : SingletonMonoBehaviour<PoolingManager>
                     {
                         vfx.transform.SetParent(parent);
                     }
+                    if (insideCanvas)
+                    {
+                        vfx.GetComponent<RectTransform>().anchoredPosition = position;
+                        vfx.transform.localScale = Vector3.one;
+                    }
                     vfx.transform.position = position;
                     dicPooling[nameObj].Add(vfx);
                     return vfx;
@@ -150,7 +164,7 @@ public class PoolingManager : SingletonMonoBehaviour<PoolingManager>
 
         return null;
     }
-    public GameObject GetObjectPrefab(GameObject objSpaw, Vector3 position, Transform parent = null)
+    public GameObject GetObjectPrefab(GameObject objSpaw, Vector3 position, Transform parent = null, bool insideCanvas = false)
     {
         string nameObj = objSpaw.name + "_ObjPrefab";
         if (dicPooling.ContainsKey(nameObj) && dicPooling[nameObj].Count > 0)
@@ -168,6 +182,11 @@ public class PoolingManager : SingletonMonoBehaviour<PoolingManager>
                     {
                         obj.transform.SetParent(parent);
                     }
+                    if (insideCanvas)
+                    {
+                        obj.GetComponent<RectTransform>().anchoredPosition = position;
+                        obj.transform.localScale = Vector3.one;
+                    }
                     obj.transform.position = position;
                     obj.SetActive(true);
                     return obj;
@@ -183,6 +202,11 @@ public class PoolingManager : SingletonMonoBehaviour<PoolingManager>
         else
         {
             vfx.transform.SetParent(parent);
+        }
+        if (insideCanvas)
+        {
+            vfx.GetComponent<RectTransform>().anchoredPosition = position;
+            vfx.transform.localScale = Vector3.one;
         }
         vfx.transform.position = position;
         if (dicPooling.ContainsKey(nameObj))
