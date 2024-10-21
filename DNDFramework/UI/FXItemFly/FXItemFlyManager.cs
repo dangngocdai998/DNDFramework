@@ -25,7 +25,9 @@ public class FXItemFlyManager : SingletonMonoBehaviour<FXItemFlyManager>
     }
     public Transform GetTransformTarget(string typeItem)
     {
-        return _dictionaryFlyTargets[typeItem];
+        if (_dictionaryFlyTargets.ContainsKey(typeItem))
+            return _dictionaryFlyTargets[typeItem];
+        return null;
     }
 
     public void ShowItemCollect(string typeItem, int numberStar, Transform posStart, bool collectUI = false, Action<bool> completedFly = null)
