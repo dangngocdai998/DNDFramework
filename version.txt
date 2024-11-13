@@ -1,2 +1,2 @@
 Package version:
-CommonGame v0.0.11
+CommonGame v0.0.12

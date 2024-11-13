@@ -61,9 +61,11 @@ public class FXItemFlyManager : SingletonMonoBehaviour<FXItemFlyManager>
         if (Camera.main != null)
         {
             Vector2 screenPos = Camera.main.WorldToScreenPoint(posStart.position);
-            Vector2 posAnchored = (screenPos - (transformCanvasFx.anchoredPosition)) / (float)transformCanvasFx.localScale.x;
 
-            StartCoroutine(DelayShowItem(typeItem, numberStar, posAnchored, transformTarget, true));
+            if (transformCanvasFx.GetComponent<Canvas>().worldCamera != null)
+                screenPos = (screenPos - (transformCanvasFx.anchoredPosition)) / (float)transformCanvasFx.localScale.x;
+
+            StartCoroutine(DelayShowItem(typeItem, numberStar, screenPos, transformTarget, true));
         }
     }
 
