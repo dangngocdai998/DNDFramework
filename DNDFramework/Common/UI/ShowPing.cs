@@ -12,7 +12,7 @@ public class ShowPing : MonoBehaviour
     void Start()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        Application.targetFrameRate = 40;
+        Application.targetFrameRate = 60;
 #else
         // Application.targetFrameRate = 60;
 #endif
@@ -24,31 +24,31 @@ public class ShowPing : MonoBehaviour
 
     }
 
-    public void CheckPing(string ip)
-    {
-        StartCoroutine(StartPing(ip));
-    }
+    // public void CheckPing(string ip)
+    // {
+    //     StartCoroutine(StartPing(ip));
+    // }
 
-    IEnumerator StartPing(string ip)
-    {
-        WaitForSeconds f = new WaitForSeconds(0.05f);
-        Ping p = new Ping(ip);
-        while (p.isDone == false)
-        {
-            yield return f;
-        }
-        PingFinished(p);
-    }
+    // IEnumerator StartPing(string ip)
+    // {
+    //     WaitForSeconds f = new WaitForSeconds(0.05f);
+    //     Ping p = new Ping(ip);
+    //     while (p.isDone == false)
+    //     {
+    //         yield return f;
+    //     }
+    //     PingFinished(p);
+    // }
 
 
-    public void PingFinished(Ping p)
-    {
-        Debug.Log("Zô ss");
-        txt_Show.text = FramesPerSec + "fps - " + p.time + "ms";
-        _pingTime = p.time;
-        CheckPing(url);
-        // stuff when the Ping p has finshed....
-    }
+    // public void PingFinished(Ping p)
+    // {
+    //     Debug.Log("Zô ss");
+    //     txt_Show.text = FramesPerSec + "fps - " + p.time + "ms";
+    //     _pingTime = p.time;
+    //     CheckPing(url);
+    //     // stuff when the Ping p has finshed....
+    // }
     public int FramesPerSec { get; protected set; }
 
     [SerializeField] private float frequency = 0.2f;
