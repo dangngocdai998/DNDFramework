@@ -45,12 +45,12 @@ public class LoadSceneManager : SingletonMonoBehaviour<LoadSceneManager>
     // }
     #endregion
 
-    public void LoadScene(string name, Action completed, bool isEndTransition = true)
+    public void LoadScene(string name, Action completed, bool isAutoEndTransition = true)
     {
-        TransitionFX.Instance.StartFade(() => { StartCoroutine(WaitLoadAsyncScene(name, completed, isEndTransition)); });
+        TransitionFX.Instance.StartFade(() => { StartCoroutine(WaitLoadAsyncScene(name, completed, isAutoEndTransition)); });
     }
 
-    private IEnumerator WaitLoadAsyncScene(string name, Action completed, bool isEndTransition)
+    private IEnumerator WaitLoadAsyncScene(string name, Action completed, bool isAutoEndTransition)
     {
         Debug.Log("Scene " + name + " is loading...");
         CanvasManager.ClearAllUI();
@@ -66,7 +66,7 @@ public class LoadSceneManager : SingletonMonoBehaviour<LoadSceneManager>
             yield return null;
         };
         completed?.Invoke();
-        if (isEndTransition)
+        if (isAutoEndTransition)
             if (TransitionFX.Exists())
             {
                 yield return new WaitForSecondsRealtime(0.5f);
