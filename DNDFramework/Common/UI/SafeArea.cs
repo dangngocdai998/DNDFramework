@@ -97,6 +97,8 @@ namespace Crystal
         #endregion
 
         RectTransform Panel;
+        static Rect safeAreaCache = new Rect(0, 0, 0, 0);
+        static bool isCache = false;
         Rect LastSafeArea = new Rect(0, 0, 0, 0);
         Vector2Int LastScreenSize = new Vector2Int(0, 0);
         ScreenOrientation LastOrientation = ScreenOrientation.AutoRotation;
@@ -115,17 +117,20 @@ namespace Crystal
             }
 
             Refresh();
-            this.RegisterListener("closeAdsFullScene", (param) => OnCloseAdsFullScene());
+            // this.RegisterListener("closeAdsFullScene", (param) => OnCloseAdsFullScene());
         }
-        private void OnDestroy()
-        {
-            this.RemoveListener("closeAdsFullScene");
+        // private void OnDestroy()
+        // {
+        //     this.RemoveListener("closeAdsFullScene");
+        // }
+        // void Update()
+        // {
+        //     Refresh();
+        // }
+        public static void SetCacheSafeArea(){
+            isCache = true;
+            safeAreaCache = Screen.safeArea;
         }
-        void Update()
-        {
-            Refresh();
-        }
-
         void OnCloseAdsFullScene()
         {
             isReload = true;
@@ -154,7 +159,9 @@ namespace Crystal
 
         Rect GetSafeArea()
         {
-            Rect safeArea = Screen.safeArea;
+            if(!isCache){
+                SetCacheSafeArea();
+            }
 
             if (Application.isEditor && Sim != SimDevice.None)
             {
@@ -190,10 +197,10 @@ namespace Crystal
                         break;
                 }
 
-                safeArea = new Rect(Screen.width * nsa.x, Screen.height * nsa.y, Screen.width * nsa.width, Screen.height * nsa.height);
+                safeAreaCache = new Rect(Screen.width * nsa.x, Screen.height * nsa.y, Screen.width * nsa.width, Screen.height * nsa.height);
             }
 
-            return safeArea;
+            return safeAreaCache;
         }
 
         void ApplySafeArea(Rect r)
