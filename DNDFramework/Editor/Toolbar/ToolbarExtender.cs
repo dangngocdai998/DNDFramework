@@ -1,7 +1,7 @@
 //com.marijnzwemmer.unity-toolbar-extender
 //https://github.com/marijnz/unity-toolbar-extender.git
 //1.4.3
-
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -174,3 +174,4 @@ namespace UnityToolbarExtender
     }
 }
 
+#endif
